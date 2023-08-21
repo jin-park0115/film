@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react"
 import { styled } from "styled-components"
-const User = {
-  email: 'test@gmail.com',
-  pw: 'Test1234@!~'
-}
+import { Link, useNavigate } from "react-router-dom"
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { useSelector, useDispatch } from "react-redux";
+import { setUser, clearUser } from '../store/auth';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
+  const user = useSelector(state => state.auth.user);
+  const dispatch = useDispatch();
 
   const [emailValid, setEmailVaild] = useState(false);
   const [pwVaild, setpwVaild] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
+
+  const navigate = useNavigate();
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -35,13 +39,26 @@ const LoginPage = () => {
     };
   }
 
-  const onClickconfirmButton = () => {
-    if(email === User.email && pw === User.pw){
-      alert('로그인에 성공했습니다.')
-    } else{
-      alert('등록되지 않은 회원입니다.')
+  const onClickconfirmButton = async () => {
+    try{
+      const auth = getAuth();
+      await signInWithEmailAndPassword(auth, email, pw);
+      alert('로그인에 성공했습니다.');
+      localStorage.setItem('user', JSON.stringify(auth.currentUser));
+      dispatch(setUser(auth.currentUser));
+      navigate('/')
+    } catch(error){
+      console.log(error)
+      alert('등록되지 않은 회원이거나 비밀번호가 틀렸습니다.')
+      window.location.reload();
     }
   }
+
+  const onClickSignUpButton = () => {
+    navigate('/signup')
+  }
+  
+
 
   useEffect(() => {
     if(emailValid && pwVaild){
@@ -84,16 +101,26 @@ const LoginPage = () => {
         </ErrorMsg>
       </LoginWrap>
 
-      <Button onClick={onClickconfirmButton} disabled={notAllow}>확인</Button>
+      <Button onClick={onClickconfirmButton} disabled={notAllow}>LogIn</Button>
+      <Button onClick={onClickSignUpButton}>Sign Up</Button>
     </Page>
   )
 }
 
 export default LoginPage
 
+const LoggedInText = styled.div`
+  color: blue;
+  width: 200px;
+`
+const LoggedOutText =styled.div`
+  color: blue;
+  width: 200px;
+`
+
 const Page = styled.div`
   position: absolute;
-  top: 0;
+  top: 10;
   left: 50%;
   transform: translate(-50%);
   background-color: #cdcdcd;
@@ -149,6 +176,24 @@ const ErrorMsg = styled.div`
 `
 
 const Button = styled.button`
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #0e0e0e;
+  color: white;
+  font-size: 18px;
+  margin-bottom: 10px;
+  &:disabled{
+    background-color: #dbdbdb;
+    color: #0e0e0e;
+  }
+  cursor: pointer;
+  transition: 0.5s;
+  &:hover{
+    background-color: #353333;
+  }
+`
+const SignUpButton = styled.link`
   border: none;
   border-radius: 5px;
   padding: 10px;

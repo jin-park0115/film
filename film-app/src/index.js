@@ -5,12 +5,23 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { Provider } from 'react-redux';
+import store from './store';
+import { setUser } from './store/auth';
+
+const userFromSession = JSON.parse(localStorage.getItem('user'));
+if (userFromSession) {
+  store.dispatch(setUser(userFromSession))
+}
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 

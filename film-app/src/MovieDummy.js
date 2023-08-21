@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// export const API_KEY = 'e035559d2ffa712d612d79869ca7d545' 
+export const API_KEY = 'e035559d2ffa712d612d79869ca7d545' 
 
 
 export async function getData(){

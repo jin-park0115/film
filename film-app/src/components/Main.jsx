@@ -1,22 +1,44 @@
 import { styled } from "styled-components";
-import Banner from "./Banner";
-import MoviePoster from "./MoviePoster";
-
+import { Link } from "react-router-dom";
+import MoviePoster from './MoviePoster'
+import MovieList from "./MovieList";
 const Main = () => {
   return (
-    <MainSection>
-      <Banner />
-      <MoviePoster />
-    </MainSection>
+    <>
+      <MainNav>
+        <Link to='/endscreening'>
+          <EndScreening>상영종료된영화</EndScreening>
+        </Link>
+        <Link to='/'>
+          <Home>HOME</Home>
+        </Link>
+      </MainNav>
+      <MovieList/>
+    </>
   );
 };
 
-const MainSection = styled.main`
-  width: calc(100% - 228px);
+const MainNav = styled.div`
+  width: 30%;
+  border-bottom: 1px solid #292727 ;
   position: absolute;
-  top: 0px;
-  left: 231px;
-  height: 100%;
-`;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%);
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+`
+
+const EndScreening = styled.div`
+  font-size: 24px;
+  font-weight: 300;
+`
+const Home = styled.h2`
+  font-size: 24px;
+  font-weight: 300;
+`
+
+
 
 export default Main;
