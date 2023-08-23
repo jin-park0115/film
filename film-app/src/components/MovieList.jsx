@@ -1,42 +1,67 @@
-import { styled } from "styled-components"
-import MoviePoster from "./MoviePoster"
-import MovieCard from "./MovieCard"
-import { useEffect } from "react"
-import { FetchMovies } from "../Service/MovieService"
+import { styled } from "styled-components";
+import MovieCard from "./MovieCard";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+const API_KEY = "c56d83fe927489921d3802aad330d3c9";
 
 const MovieList = () => {
+  const [popularMovies, setPopularMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    (async()=> {
-      const result = await FetchMovies();
-      console.log(result.data)
-    })()
-  },[])
+    axios
+      .get(
+        `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=ko-KR&page=1`
+      )
+      .then((response) => {
+        const movieData = response.data.results.slice(0, 12);
+        setPopularMovies(movieData);
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.error("Error fetching", err);
+      });
+  }, []);
 
-  return(
-    <List>
-      {
-        Array.from({ length : 10 }).map((_, index) => {
-          return (
-            <MovieCard key ={index}/>
-          )
-        })
-      }
-    </List>
-  )
-}
+  if (loading)
+    return (
+      <Con>
+        <LoadingSkeleton>Loading...</LoadingSkeleton>
+      </Con>
+    );
 
-const List = styled.ul`
+  return (
+    <Con>
+      <Title>인기 영화</Title>
+      <List>
+        {popularMovies.map((movie, index) => (
+          <MovieCard key={index} title={movie.title} image={movie.poster_path} />
+        ))}
+      </List>
+    </Con>
+  );
+};
+const Con = styled.div`
   width: 80%;
   position: absolute;
   top: 15%;
   left: 50%;
   transform: translate(-50%);
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  padding: 10px;
-`
+`;
+const Title = styled.h1`
+  margin-bottom: 16px;
+  color: #080707;
+`;
 
-export default MovieList
+const List = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+`;
+const LoadingSkeleton = styled.h1`
+  font-size: 40px;
+  color: gainsboro;
+`;
+
+export default MovieList;

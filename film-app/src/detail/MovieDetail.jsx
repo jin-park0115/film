@@ -1,20 +1,72 @@
 import { styled } from "styled-components"
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
-const example = 'https://img.cgv.co.kr/Movie/Thumbnail/Poster/000087/87175/87175_320.jpg'
+const API_KEY = "c56d83fe927489921d3802aad330d3c9";
+
 
 const MovieDetail = () => {
+  const navigate = useNavigate()
+
+  const handleBackButton = () => {
+    navigate(-1)
+  }
+
+  const [movieInfo, setMovieInfo] = useState(null);
+  const [credits, setCredits] = useState([])
+  const [director, setDirector] = useState("")
+  const { title } = useParams();
+
+  useEffect(() => {
+    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${title}&language=ko-KR`)
+    .then(response => {
+      const movieData = response.data.results[0];
+      setMovieInfo(movieData)
+
+      axios.get(`https://api.themoviedb.org/3/movie/${movieData.id}/credits?api_key=${API_KEY}&language=ko-KR`)
+        .then(creditResponse => {
+          const creditsData = creditResponse.data;
+          if(Array.isArray(creditsData.cast)) {
+            setCredits(creditsData.cast.slice(0,4))
+          } else{
+            setCredits([])
+          }
+
+          const  directorInfo = creditsData.crew.find(member => member.job === 'Director')
+          if(directorInfo) {
+            setDirector(directorInfo.name)
+          }
+        })
+        .catch(creditError => {
+          console.error('creditResponse Error', creditError)
+        })
+    })
+    .catch(err => {
+      console.err('에러', err)
+    })
+  }, [title])
+ 
+  if (!movieInfo) {
+    return <p>Loading...</p>;
+  }
+
   return(
     <DetailCon>
       <Wrap>
+        <BackButton onClick={handleBackButton}>뒤로가기</BackButton>
         <ImgWrap>
-          <Imge src={example} alt="영화포스터"></Imge>
+          <Imge src={`https://image.tmdb.org/t/p/w500/${movieInfo.poster_path}`} alt="영화포스터"></Imge>
         </ImgWrap>
         <TextWrap>
-          <Title>제목: 오펜하이머</Title>
-          <Title>감독명:</Title>
-          <Title>배우명:</Title>
-          <Title>줄거리:</Title>
-          <Title>개봉일:</Title>
+          <Title>제목: {movieInfo.title}</Title>
+          <Title>감독명: {director} </Title>
+          <Title>배우명: {credits.map(actor => (
+            <div key={actor.id}>{actor.name} - {actor.character}</div>
+          ))}</Title>
+          <Title>줄거리: {movieInfo.overview}</Title>
+          <Title>개봉일: {movieInfo.release_date}</Title>
+          <Title>평점: {movieInfo.vote_average}</Title>
         </TextWrap>
       </Wrap>
     </DetailCon>
@@ -26,7 +78,7 @@ export default MovieDetail
 const DetailCon = styled.div`
   position: absolute;
   width: 80%;
-  height: 100%;
+  height: 80%;
   top: 15%;
   left: 50%;
   transform: translate(-50%);
@@ -35,14 +87,13 @@ const DetailCon = styled.div`
 `
 const Wrap = styled.div`
   display: flex;
-  margin-top: 48px;
-  margin-left: 25%;
+  margin: 0 auto;
+  margin-top: 130px;
 `
 
 const ImgWrap = styled.div`
-  width: 300px;
+  margin: 0 auto;
   height: 400px;
-  margin-right: 14px;
   box-shadow: 1px 3px 8px 1px #232323;
 `
 
@@ -52,13 +103,29 @@ const Imge = styled.img`
 `
 
 const TextWrap = styled.div`
-  border: 1px solid #232323;
-  width: 100%;
-  height: 100px;
+  width: calc(100% - 50%);
   
 `
 
-const Title = styled.h1`
+const Title = styled.p`
   color: #232323;
   font-size: 16px;
+  margin-bottom: 12px;
+`
+
+const BackButton = styled.button`
+  outline: none;
+  border: none;
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: #b7b7b7;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.5s;
+  &:hover{
+    background-color: #646464;
+  }
 `

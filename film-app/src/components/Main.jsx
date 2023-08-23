@@ -1,13 +1,13 @@
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
-import MoviePoster from './MoviePoster'
 import MovieList from "./MovieList";
+import MoreMovie from "./MoreMovie";
 const Main = () => {
   return (
     <>
       <MainNav>
-        <Link to='/endscreening'>
-          <EndScreening>상영종료된영화</EndScreening>
+        <Link to='/movieMore'>
+          <MovieMore>영화 더보기</MovieMore>
         </Link>
         <Link to='/'>
           <Home>HOME</Home>
@@ -18,7 +18,7 @@ const Main = () => {
   );
 };
 
-const MainNav = styled.div`
+export const MainNav = styled.div`
   width: 30%;
   border-bottom: 1px solid #292727 ;
   position: absolute;
@@ -30,7 +30,7 @@ const MainNav = styled.div`
   color: #fff;
 `
 
-const EndScreening = styled.div`
+const MovieMore = styled.div`
   font-size: 24px;
   font-weight: 300;
 `
