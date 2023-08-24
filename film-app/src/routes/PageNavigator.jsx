@@ -3,7 +3,7 @@ import Main from "../components/Main"
 import LoginPage from "../components/LoginPage"
 import SignUp from '../SignUp/SignUp'
 import SearchPage from "../components/SearchPage"
-import MovieDetail from "../Detail/MovieDetail"
+import MovieDetail from "./MovieDetail"
 import MoreMovie from "../components/MoreMovie"
 
  
