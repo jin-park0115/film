@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/main.6059ff3f.css","mappings":"AACA,MAGE,wBAAyB,CADzB,YAAa,CADb,UAGF","sources":["index.css"],"sourcesContent":["\n#root{\n  width: 100%;\n  height: 200vh;\n  background-color: #3e3c3c;\n}\n"],"names":[],"sourceRoot":""}
