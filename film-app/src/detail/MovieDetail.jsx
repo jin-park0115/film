@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeftLong } from 'react-icons/fa6'
 
-const API_KEY = "c56d83fe927489921d3802aad330d3c9";
+const API_KEY = 'c56d83fe927489921d3802aad330d3c9';
 
 
 const MovieDetail = () => {
@@ -43,8 +43,8 @@ const MovieDetail = () => {
           console.error('creditResponse Error', creditError)
         })
     })
-    .catch(err => {
-      console.err('에러', err)
+    .catch(error => {
+      console.error('에러', error)
     })
   }, [title])
  
