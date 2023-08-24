@@ -51,8 +51,8 @@ const LoginPage = () => {
       localStorage.setItem('user', JSON.stringify(auth.currentUser));
       dispatch(setUser(auth.currentUser));
       navigate('/')
-    } catch(error){
-      console.log(error)
+    }catch(error){
+      console.error('error' ,error)
       alert('등록되지 않은 회원이거나 비밀번호가 틀렸습니다.')
       window.location.reload();
     }
