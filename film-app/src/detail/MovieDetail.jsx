@@ -76,7 +76,6 @@ const MovieDetail = () => {
   )
 }
 
-export default MovieDetail
 
 const DetailCon = styled.div`
   position: absolute;
@@ -87,7 +86,7 @@ const DetailCon = styled.div`
   transform: translate(-50%);
   background-color: #fff;
   border-radius: 15px;
-`
+  `
 const Wrap = styled.div`
   display: flex;
   margin: 0 auto;
@@ -122,7 +121,8 @@ const BackButton = styled.button`
   border: none;
   margin-bottom: 8px;
   cursor: pointer;
-`
+  `
 const LeftArrow = styled(FaArrowLeftLong)`
   font-size: 2rem;
-`
+  `
+  export default MovieDetail
