@@ -1,7 +1,6 @@
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
 import MovieList from "./MovieList";
-import MoreMovie from "./MoreMovie";
 const Main = () => {
   return (
     <>
