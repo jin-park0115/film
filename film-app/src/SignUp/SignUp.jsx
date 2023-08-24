@@ -6,24 +6,30 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
   const navigate = useNavigate();
 
 
   const join = async () => {
+    if(password !== passwordConfirm){
+      setErrorMsg('비밀번호가 일치하지 않습니다.')
+      return
+    }
+
     setErrorMsg('');
 
     try{
       const auth = getAuth();
       const { user } = await createUserWithEmailAndPassword(auth, email, password)     
-      console.log(user)
       alert('회원가입 되었습니다.')
-      navigate('/')
+      navigate('/login')
       setEmail('')
       setPassword('')
+      setPasswordConfirm('')
     } catch (error) {
       switch (error.code){
         case 'auth/weak-password':
-          setErrorMsg('비밀번호는 6자리 이상이어야 합니다');
+          setErrorMsg('비밀번호는 대문자와 특수문자를 사용하고 6자 이상이어야 합니다');
           break;
         case 'auth/invalid-email':
           setErrorMsg('잘못된 이메일 주소입니다');
@@ -31,6 +37,8 @@ const SignUp = () => {
         case 'auth/email-already-in-use':
           setErrorMsg('이미 가입되어 있는 계정입니다');
           break;
+        default :
+          setErrorMsg('오류가 있습니다.')  
       }
     }
   }
@@ -38,6 +46,7 @@ const SignUp = () => {
   const onClickGoLogin = () => {
     navigate('/login')
   }
+
   return(
     <Page>
       <Title>회원가입</Title>
@@ -52,7 +61,7 @@ const SignUp = () => {
             id="ID"
           />
         </InputWrap>
-        <Label>비밀번호</Label>
+        <Label style={{marginTop: '14px'}}>비밀번호</Label>
         <InputWrap>
           <Input
             type="password"
@@ -62,10 +71,20 @@ const SignUp = () => {
             id="PW"
           />
         </InputWrap>
+        <Label style={{marginTop: '14px'}}>비밀번호 재확인</Label>
+        <InputWrap>
+          <Input
+            type="password"
+            placeholder="비밀번호를 다시 입력해주세요"
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
+            id="PWConfirm"
+          />
+        </InputWrap>
       </FormWrap>
+      {errorMsg && <p style={{ color: 'red'}}>{errorMsg}</p>}
       <Button onClick={join}>회원가입하기</Button>
       <Button onClick={onClickGoLogin}>LogIn</Button>
-      {errorMsg && <p style={{ color: 'red'}}>{errorMsg}</p>}
     </Page>
   )
 }

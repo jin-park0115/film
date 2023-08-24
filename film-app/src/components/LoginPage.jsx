@@ -4,18 +4,22 @@ import { Link, useNavigate } from "react-router-dom"
 import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { useSelector, useDispatch } from "react-redux";
 import { setUser, clearUser } from '../store/auth';
+import { FaArrowLeftLong } from 'react-icons/fa6'
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const user = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
-
   const [emailValid, setEmailVaild] = useState(false);
   const [pwVaild, setpwVaild] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
 
   const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1)
+  }
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -72,6 +76,9 @@ const LoginPage = () => {
   return(
     <Page>
       <TitleWrap>
+      <BackButton onClick={handleBack}>
+        <LeftArrow />
+      </BackButton>
         이메일과 비밀번호를
         <br/>
         입력해주세요.
@@ -108,6 +115,17 @@ const LoginPage = () => {
 }
 
 export default LoginPage
+
+const BackButton = styled.button`
+  display: block;
+  background: transparent;
+  border: none;
+  margin-bottom: 8px;
+  cursor: pointer;
+`
+const LeftArrow = styled(FaArrowLeftLong)`
+  font-size: 2rem;
+`
 
 const LoggedInText = styled.div`
   color: blue;

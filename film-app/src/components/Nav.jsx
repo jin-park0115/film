@@ -1,7 +1,6 @@
 import React from "react";
 import { css, styled } from "styled-components";
 import { Link } from "react-router-dom";
-import LoginPage from "./LoginPage";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuth, signOut } from "firebase/auth";
 import { logoutUser } from "../store/auth";
@@ -24,7 +23,9 @@ const Nav = () => {
     <MenuBar>
       <Menu>
         <Link to='/'>
-          <h1>logo</h1>
+          <LogoImgWrap>
+            <LogoImg src="/img/flim_1.svg" alt="logo img"/>
+          </LogoImgWrap>
         </Link>
         <Link to='/search'>
           <Search>검색</Search>
@@ -48,6 +49,15 @@ const theSame = css`
   cursor: pointer;
   color: white;
 `
+const LogoImgWrap = styled.div`
+  width: 28px;
+  height: 34px;
+`
+
+const LogoImg = styled.img`
+  width: 100%;
+  height: 100%;
+`
 
 const MenuBar = styled.nav`
   width: 100%;
@@ -60,7 +70,7 @@ const MenuBar = styled.nav`
   flex-wrap: wrap;
 `
 const Menu = styled.div`
-  width: 200px;
+  width: 280px;
   margin-left: auto;
   margin-right: 40px;
   display: flex;

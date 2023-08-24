@@ -2,6 +2,7 @@ import { styled } from "styled-components"
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { FaArrowLeftLong } from 'react-icons/fa6'
 
 const API_KEY = "c56d83fe927489921d3802aad330d3c9";
 
@@ -54,7 +55,9 @@ const MovieDetail = () => {
   return(
     <DetailCon>
       <Wrap>
-        <BackButton onClick={handleBackButton}>뒤로가기</BackButton>
+        <BackButton onClick={handleBackButton}>
+          <LeftArrow/>
+        </BackButton>
         <ImgWrap>
           <Imge src={`https://image.tmdb.org/t/p/w500/${movieInfo.poster_path}`} alt="영화포스터"></Imge>
         </ImgWrap>
@@ -114,18 +117,12 @@ const Title = styled.p`
 `
 
 const BackButton = styled.button`
-  outline: none;
+  display: block;
+  background: transparent;
   border: none;
-  height: 30px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  padding: 20px;
-  background: #b7b7b7;
-  font-weight: bold;
+  margin-bottom: 8px;
   cursor: pointer;
-  transition: 0.5s;
-  &:hover{
-    background-color: #646464;
-  }
+`
+const LeftArrow = styled(FaArrowLeftLong)`
+  font-size: 2rem;
 `
