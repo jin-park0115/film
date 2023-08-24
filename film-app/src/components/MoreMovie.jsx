@@ -47,7 +47,7 @@ const MoreMovie = () => {
         pageNumbers.push(
           <PageNumber
             key={i}
-            active={i === currentPage}
+            $active={i === currentPage}
             onClick={() => handlePageChange(i)}
           >
             {i}
@@ -127,7 +127,7 @@ const Pagination = styled.div`
 const PageNumber = styled.span`
   margin: 0 10px;
   cursor: pointer;
-  color: ${({ active }) => (active ? "blue" : "black")};
+  color: ${({ $active }) => ($active ? "blue" : "black")};
 `;
 
 export default MoreMovie;

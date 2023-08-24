@@ -65,7 +65,7 @@ const MovieDetail = () => {
           <Title>제목: {movieInfo.title}</Title>
           <Title>감독명: {director} </Title>
           <Title>배우명: {credits.map(actor => (
-            <div key={actor.id}>{actor.name} - {actor.character}</div>
+            <span key={actor.id}>{actor.name} - {actor.character}</span>
           ))}</Title>
           <Title>줄거리: {movieInfo.overview}</Title>
           <Title>개봉일: {movieInfo.release_date}</Title>
